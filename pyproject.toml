@@ -1,0 +1,24 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "gsstatic"
+version = "0.0.1"
+authors = [
+  { name="Paul Gower", email="pgower@gscs.au" },
+]
+description = "A static site generator based on the Jinja2 templating engine."
+readme = "README.md"
+requires-python = ">=3.8"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = ["markupsafe", "jinja2", "watchdog"]
+keywords = ["static site generator", "jinja2"]
+
+[project.urls]
+Homepage = "https://github.com/GSCS-AU/gsstatic"
+Issues = "https://github.com/GSCS-AU/gsstatic/issues"
