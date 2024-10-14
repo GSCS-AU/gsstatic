@@ -1,21 +1,29 @@
 import functools
-from importlib import import_module
+from importlib import import_module, reload
 import sys
 import os
 
 from markupsafe import Markup
 
+IMPORTED_MODULES = {}
 
 def load_class(path):
     """
     Load class from path.
     """
-
-    try:
-        mod_name, klass_name = path.rsplit('.', 1)
-        mod = import_module(mod_name)
-    except AttributeError as e:
-        raise ImportError(f'Error importing {mod_name}: "{e}"')
+    mod_name, klass_name = path.rsplit('.', 1)
+    if path in IMPORTED_MODULES:
+        # try to reload the module
+        print(f'Reloading {path}')
+        mod = reload(IMPORTED_MODULES[path])
+        IMPORTED_MODULES[path] = mod    
+    else:
+        try:
+            print(f'Importing {path}')            
+            mod = import_module(mod_name)
+            IMPORTED_MODULES[path] = mod
+        except AttributeError as e:
+            raise ImportError(f'Error importing {mod_name}: "{e}"')
 
     try:
         klass = getattr(mod, klass_name)

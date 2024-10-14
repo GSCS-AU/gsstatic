@@ -2,7 +2,6 @@ import jinja2
 
 from . import utils
 from . import library
-from .reloader import Reloader
 
 from importlib import import_module
 
@@ -11,6 +10,7 @@ import re
 import os
 import sys
 import inspect
+from copy import deepcopy
 
 from pathlib import Path
 
@@ -55,11 +55,11 @@ default_options = {
     'trim_blocks': False,
     'lstrip_blocks': False,
     'bytecode_cache': 'jinja2.BytecodeCache',
-    
 }
 
 class Site(object):
     def __init__(self, options=default_options):
+        options = deepcopy(options)
 
         # Debug
         self.debug = options.pop("debug", True)
@@ -306,10 +306,7 @@ class Site(object):
             self.logger.debug('Context: %s', ctx)
             f.write(template.render(ctx))
         
-    def make(self, watch=False):
+    def make(self):
         self.check_output_dir()
 
         self.render_templates()
-
-        if watch:
-            Reloader(self).watch()
